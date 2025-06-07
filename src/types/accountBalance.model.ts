@@ -7,10 +7,17 @@ export interface AccountBalance {
   date: string;
 }
 
+// May eventually have db for this
+export interface Transaction {
+  recipientId: string;
+  senderId: string;
+  amount: number;
+}
+
 const accountBalanceSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true },
-  balance: { type: Number, required: true},
-  date: { type: String, required: true}
+  balance: { type: Number, required: true },
+  date: { type: String, required: true },
 });
 
 export const AccountBalanceModel = mongoose.model(

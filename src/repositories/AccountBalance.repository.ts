@@ -26,9 +26,50 @@ export class MockAccountBalanceRepository implements IAccountBalanceRepository {
         };
       });
       return data;
-    } catch(e) {
+    } catch (e) {
       console.error(e);
       return [];
+    }
+  }
+
+  async getAccountBalanceById(id: string): Promise<AccountBalanceEntity> {
+    try {
+      const current = await this.dbClient?.getById(id);
+      if (!current) {
+        throw new Error(`No record exists with ${id}`);
+      }
+      return {
+        id: id,
+        balance: current.balance,
+        date: "0000",
+      };
+    } catch (e) {
+      console.error(e);
+      throw new Error(`Error updating account balance, ${e}`);
+    }
+  }
+
+  async updateAccountBalanceById(
+    id: string,
+    amount: number
+  ): Promise<AccountBalanceEntity> {
+    try {
+      const current = await this.dbClient?.getById(id);
+      console.log("31231231231312", current);
+      if (!current) {
+        throw new Error(`No record exists with ${id}`);
+      }
+      await this.dbClient?.update(id, {
+        balance: amount,
+      });
+      return {
+        id: id,
+        balance: amount,
+        date: "0000",
+      };
+    } catch (e) {
+      console.error(e);
+      throw new Error(`Error updating account balance, ${e}`);
     }
   }
 }
@@ -40,6 +81,9 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
     this.dbClient = dbClient
       ? new MongoDBClient<AccountBalance>(AccountBalanceModel)
       : dbClient;
+  }
+  async getAccountBalanceById(id: string): Promise<AccountBalanceEntity> {
+    throw new Error("Method not implemented.");
   }
 
   async getAllAccountBalances(): Promise<AccountBalanceEntity[]> {
@@ -59,5 +103,9 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
       console.error(e);
       return [];
     }
+  }
+
+  async updateAccountBalanceById(): Promise<AccountBalanceEntity> {
+    throw new Error("to be implemented");
   }
 }

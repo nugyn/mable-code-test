@@ -11,10 +11,10 @@ describe("Account Balance Controller", () => {
     mockService = {
       getAllAccountBalances: jest.fn(),
     } as unknown as jest.Mocked<IAccountBalanceService>;
-    mockReq = {} as jest.Mocked<Request>
+    mockReq = {} as jest.Mocked<Request>;
     mockRes = {
-        json: jest.fn(),
-        status: jest.fn().mockReturnThis(),
+      json: jest.fn(),
+      status: jest.fn().mockReturnThis(),
     } as unknown as jest.Mocked<Response>;
   });
 
@@ -26,6 +26,6 @@ describe("Account Balance Controller", () => {
     controller.getAllAccountBalances(mockReq, mockRes);
 
     //Assert
-    expect(mockRes.status).toHaveBeenCalledWith(200)
+    expect(mockRes.status).toHaveBeenCalledWith(200);
   });
 });
