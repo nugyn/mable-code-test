@@ -12,9 +12,8 @@
     "lint": "npm run prettier && eslint src/**/*.ts",
     "test": "npx jest",
     "docker:setup": "docker pull mongo && docker run --name mongo-local -d -p 27017:27017 mongo:7",
-    "docker:stop": "docker stop mongo-local",
-    "docker:start": "docker start mongo-local",
-    "docker:stop": " docker rm -f mongo-local"
+    "docker:stop": " docker rm -f mongo-local",
+    "docker:start": "docker start mongo-local"
   },
   "author": "",
   "license": "ISC",

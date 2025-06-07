@@ -1,9 +1,31 @@
-import { AccountBalance } from "src/types/Balances.type"
+import { IAccountBalanceService } from "src/services/IAccountBalance.service";
+import AccountBalanceController from "./AccountBalance.controller";
+import { Request, Response } from "express";
 
-describe("AccountBalanceController", () => {
+describe("Account Balance Controller", () => {
+  let mockService: jest.Mocked<IAccountBalanceService>;
+  let mockReq: jest.Mocked<Request>;
+  let mockRes: jest.Mocked<Response>;
+
+  beforeEach(() => {
+    mockService = {
+      getAllAccountBalances: jest.fn(),
+    } as unknown as jest.Mocked<IAccountBalanceService>;
+    mockReq = {} as jest.Mocked<Request>
+    mockRes = {
+        json: jest.fn(),
+        status: jest.fn().mockReturnThis(),
+    } as unknown as jest.Mocked<Response>;
+  });
+
+  it("will get all account balances", () => {
     //Arrange
-    const controller = new AccountBalanceController
+    const controller = new AccountBalanceController(mockService);
     //Act
 
+    const result = controller.getAllAccountBalances(mockReq, mockRes);
+
     //Assert
-})
+    expect(result).toBe({})
+  });
+});

@@ -1,34 +1,21 @@
-import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser';
 import http from 'http';
+import router from "./controllers/routes/index";
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
-import { handleError } from './helpers/error';
-import httpLogger from './middlewares/httpLogger';
-import router from './controllers/routes/index';
 
 const app: express.Application = express();
 
-app.use(httpLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
+// setup data base connection
+mongoose.connect
+
+// setup routes
 app.use('/', router);
-
-// catch 404 and forward to error handler
-app.use((_req, _res, next) => {
-  next(createError(404));
-});
-
-// error handler
-const errorHandler: express.ErrorRequestHandler = (err, _req, res) => {
-  handleError(err, res);
-};
-app.use(errorHandler);
 
 const port = process.env.PORT || '8000';
 app.set('port', port);
