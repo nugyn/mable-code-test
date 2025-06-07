@@ -1,8 +1,6 @@
-import { AccountBalance, BalanceSheets } from "src/types/Balances.type";
 
+import { AccountBalanceEntity } from "../types/accountBalance.domain";
 export interface IAccountBalanceRepository {
-  getAllAccountBalances(): Promise<BalanceSheets>;
-  loadAccountBalances(): Promise<boolean>;
-  loadAccountBalanceById(id: string): Promise<boolean>;
-  getAccountBalanceById(id: string): Promise<AccountBalance>;
+  getAllAccountBalances(): Promise<AccountBalanceEntity[]>;
+  getAccountBalanceById(id: string): Promise<AccountBalanceEntity>;
 }

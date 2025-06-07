@@ -1,33 +1,38 @@
-import { loadCSV } from "../utils/loadCSV";
-import { AccountBalance, BalanceSheets } from "../types/Balances.type";
+import {
+  AccountBalance,
+  AccountBalanceModel,
+} from "../types/accountBalance.model";
 import { IAccountBalanceRepository } from "./IAccountBalance.repository";
+import { IDatabaseClient } from "../clients/clients.interface";
+import { AccountBalanceEntity } from "src/types/accountBalance.domain";
+import { MongoDBClient } from "../clients/clients";
 
 class MockAccountBalanceRepository implements IAccountBalanceRepository {
-  async getAllAccountBalances(): Promise<BalanceSheets> {
-    const filePath = process.env.ACCOUNT_BALANCE_FILE_PATH;
+  private dbClient: IDatabaseClient<AccountBalance> | undefined;
+  constructor() {
+    this.dbClient = new MongoDBClient<AccountBalance>(AccountBalanceModel);
+  }
 
-    if (!filePath) {
-      throw new Error("ACCOUNT_BALANCE_FILE_PATH is not defined");
+  async getAllAccountBalances(): Promise<AccountBalanceEntity[]> {
+    try {
+      if (!this.dbClient) {
+        throw new Error("no db client");
+      }
+      const data = (await this.dbClient.getAll()).map((data) => {
+        return {
+          id: data.id,
+          balance: data.balance,
+          date: data.date, // format here?
+        };
+      });
+      return data;
+    } catch(e) {
+      console.error(e);
+      return [];
     }
-    const loadData = await loadCSV(filePath as string);
-    return loadData.reduce((acc, curr) => {
-      return {
-        ...acc,
-        [curr.id]: {
-          balance: curr.balance,
-          date: '0000',
-        }
-      };
-    }, {});
   }
-  loadAccountBalances(): Promise<boolean> {
-    throw new Error("Method not implemented.");
-  }
-  loadAccountBalanceById(id: string): Promise<boolean> {
-    console.log(id);
-    throw new Error("Method not implemented.");
-  }
-  getAccountBalanceById(id: string): Promise<AccountBalance> {
+
+  getAccountBalanceById(id: string): Promise<AccountBalanceEntity> {
     console.log(id);
     throw new Error("Method not implemented.");
   }

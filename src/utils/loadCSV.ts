@@ -1,7 +1,6 @@
-import { constants } from "buffer";
 import parse from "csv-parse"; // decided to use this instead to get more refined control over how I parse the csv
 import fs from "fs";
-import { AccountBalance } from "src/types/Balances.type";
+import { AccountBalance } from "../types/accountBalance.model";
 
 export const loadCSV = async function (
   filePath: string
@@ -25,7 +24,8 @@ export const loadCSV = async function (
 
       accountBalances.push({
         id: String(id),
-        balance: Number(balance)
+        balance: Number(balance),
+        date: '0000'
       });
     });
 
