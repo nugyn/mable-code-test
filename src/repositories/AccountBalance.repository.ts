@@ -35,9 +35,11 @@ export class MockAccountBalanceRepository implements IAccountBalanceRepository {
 
 export class AccountBalanceRepository implements IAccountBalanceRepository {
   private dbClient: IDatabaseClient<AccountBalance> | undefined;
-  
-  constructor() {
-    this.dbClient = new MongoDBClient<AccountBalance>(AccountBalanceModel);
+
+  constructor(dbClient: IDatabaseClient<AccountBalance>) {
+    this.dbClient = dbClient
+      ? new MongoDBClient<AccountBalance>(AccountBalanceModel)
+      : dbClient;
   }
 
   async getAllAccountBalances(): Promise<AccountBalanceEntity[]> {

@@ -23,9 +23,9 @@ describe("Account Balance Controller", () => {
     const controller = new AccountBalanceController(mockService);
     //Act
 
-    const result = controller.getAllAccountBalances(mockReq, mockRes);
+    controller.getAllAccountBalances(mockReq, mockRes);
 
     //Assert
-    expect(result).toBe({})
+    expect(mockRes.status).toHaveBeenCalledWith(200)
   });
 });

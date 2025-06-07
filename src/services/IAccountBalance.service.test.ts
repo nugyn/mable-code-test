@@ -1,5 +1,5 @@
 import AccountBalanceService from "./AccountBalance.service";
-import MockAccountBalanceRepository from "../repositories/AccountBalance.repository";
+import { MockAccountBalanceRepository } from "../repositories/AccountBalance.repository";
 import mongoose from "mongoose";
 import {
   AccountBalance,

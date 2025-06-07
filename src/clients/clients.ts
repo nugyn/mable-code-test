@@ -1,34 +1,5 @@
 import { IDatabaseClient } from "./clients.interface"
 import {Model} from "mongoose"
-import mongoose from 'mongoose'
-
- // mongoose.connection.on('connected', () => {
-    //     console.log('connected')
-    // })
-
-    // mongoose.connection.on("disconnected", () => {
-    //   console.log("disconnected");
-    // });
-
-    // mongoose.connection.on("error", () => {
-    //   console.log("error");
-    // });
-
-    // mongoose.connection.on("SIGINT", async () => {
-    //   await mongoose.disconnect();
-    //   process.exit(0)
-    // });
-
-const connectDB = async (uri: string) => {
-  try {
-    await mongoose.connect(uri);
-    
-    console.log("MongoDB connected.");
-  } catch (err) {
-    console.error("Connection error", err);
-    return;
-  }
-};
 
 export class MongoDBClient<T> implements IDatabaseClient<T> {
    private model: Model<T>

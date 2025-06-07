@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import MockAccountBalanceRepository from "./AccountBalance.repository";
+import { MockAccountBalanceRepository } from "./AccountBalance.repository";
 import { AccountBalanceEntity } from "../types/accountBalance.domain";
 import { loadCSV } from "../utils/loadCSV";
 import { AccountBalance, AccountBalanceModel } from "../types/accountBalance.model";
@@ -27,13 +27,7 @@ describe("Account Balance Repository", () => {
   })
 
   afterEach(async () => {
-    const collections = await mongoose.connection.db?.collections();
-    if(!collections) {
-      throw new Error('no collections')
-    }
-    for (const collection of collections) {
-      await collection.deleteMany({});
-    }
+    await AccountBalanceModel.deleteMany({});
   });
 
   afterAll(async () => {

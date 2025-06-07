@@ -3,6 +3,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import http from 'http';
 import router from "./controllers/routes/index";
+import { connectDB, disconnectDB } from './utils/db';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
@@ -12,11 +13,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // setup data base connection
-mongoose.connect
+connectDB(process.env.MONGO_URI!)
+
+// shutdown
+process.on('SIGINT', async () => {
+  await disconnectDB();
+  process.exit(0)
+})
 
 // setup routes
 app.use('/', router);
 
+// assign
 const port = process.env.PORT || '8000';
 app.set('port', port);
 
