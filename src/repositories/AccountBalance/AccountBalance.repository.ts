@@ -54,7 +54,7 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
         throw new Error(`No record exists with ${id}`);
       }
       await this.dbClient.update(id, {
-        balance: amount,
+        balance: Number(amount.toFixed(2)),
       });
       return {
         id: id,

@@ -28,7 +28,7 @@ export const loadCSV = async function (
 
       // event data, construct accountBalances
       parsed.on("data", (row) => {
-        const [recipientId, senderId, amount] = row; // [123, 123] id, and balacne respectively, destructure
+        const [senderId, recipientId, amount] = row; // [from, to, amount] respectively, destructure
 
         transactions.push({
           recipientId: String(recipientId),

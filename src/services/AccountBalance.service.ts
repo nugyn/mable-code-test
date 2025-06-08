@@ -3,6 +3,7 @@ import { IAccountBalanceService } from "./IAccountBalance.service";
 import { IAccountBalanceRepository } from "../repositories/AccountBalance/IAccountBalance.repository";
 import { DataType, loadCSV } from "../utils/loadCSV";
 import { Transaction } from "../types/accountBalance.model";
+import { calculateBalance } from "../utils/balance.utils";
 
 class AccountBalanceService implements IAccountBalanceService {
   private repository;
@@ -45,24 +46,23 @@ class AccountBalanceService implements IAccountBalanceService {
         const sender = await this.repository.getAccountBalanceById(senderId);
 
         // update balances
-        const senderBalance = sender.balance - amount;
+        const newBalance = calculateBalance(
+          sender.balance,
+          recipient.balance,
+          amount
+        );
+        const senderBalance = newBalance.senderBalance;
+        const recipientBalance = newBalance.recipientBalance;
 
-        if (senderBalance <= 0) {
-          throw new Error(
-            `Cannot transfer this amount to recipient with id ${recipientId} sender ${senderId} does not have enough balance`
-          );
-        }
-        console.debug(`DEBUG, ${recipient} and ${sender}`);
-        recipient.balance = recipient.balance + amount;
         // update each one by id
         const results = await Promise.all([
           await this.repository.updateAccountBalanceById(
             recipientId,
-            recipient.balance
+            recipientBalance
           ),
           await this.repository.updateAccountBalanceById(
             senderId,
-            sender.balance
+            senderBalance
           ),
         ]);
 

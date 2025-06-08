@@ -62,23 +62,23 @@ describe("Account Balance Service", () => {
     //Arrange
     const expected = {
       "1111234522221234": {
-        balance: 10000,
+        balance: 9974.4,
         date: expect.any(String),
       },
       "1111234522226789": {
-        balance: 5000,
+        balance: 4820.5,
         date: expect.any(String),
       },
       "1212343433335665": {
-        balance: 1200,
+        balance: 1725.60,
         date: expect.any(String),
       },
       "2222123433331212": {
-        balance: 550,
+        balance: 1550,
         date: expect.any(String),
       },
       "3212343433335755": {
-        balance: 50000,
+        balance: 48679.5,
         date: expect.any(String),
       },
     };

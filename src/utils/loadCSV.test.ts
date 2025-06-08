@@ -41,23 +41,23 @@ describe("Load CSV File", () => {
     //Arrange
     const transactions = [
       {
-        recipientId: "1111234522226789",
-        senderId: "1212343433335665",
+        recipientId: "1212343433335665",
+        senderId: "1111234522226789",
         amount: 500.0,
       },
       {
-        recipientId: "3212343433335755",
-        senderId: "2222123433331212",
+        recipientId: "2222123433331212",
+        senderId: "3212343433335755",
         amount: 1000.0,
       },
       {
-        recipientId: "3212343433335755",
-        senderId: "1111234522226789",
+        recipientId: "1111234522226789",
+        senderId: "3212343433335755",
         amount: 320.5,
       },
       {
-        recipientId: "1111234522221234",
-        senderId: "1212343433335665",
+        recipientId: "1212343433335665",
+        senderId: "1111234522221234",
         amount: 25.6,
       },
     ];
