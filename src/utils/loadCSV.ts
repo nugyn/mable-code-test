@@ -1,6 +1,7 @@
 import parse from "csv-parse"; // decided to use this instead to get more refined control over how I parse the csv
 import fs from "fs";
 import { AccountBalance, Transaction } from "../types/accountBalance.model";
+
 export enum DataType {
   AccountBalance,
   Transaction,

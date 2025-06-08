@@ -31,7 +31,7 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
 
   async getAccountBalanceById(id: string): Promise<AccountBalanceEntity> {
     try {
-      const current = await this.dbClient?.getById(id);
+      const current = await this.dbClient.getById(id);
       if (!current) {
         throw new Error(`No record exists with ${id}`);
       }
@@ -51,18 +51,18 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
     amount: number
   ): Promise<AccountBalanceEntity> {
     try {
-      const current = await this.dbClient?.getById(id);
+      const current = await this.dbClient.getById(id);
       console.log("31231231231312", current);
       if (!current) {
         throw new Error(`No record exists with ${id}`);
       }
-      await this.dbClient?.update(id, {
+      await this.dbClient.update(id, {
         balance: amount,
       });
       return {
         id: id,
         balance: amount,
-        date: "0000",
+        date: Date.now().toString(),
       };
     } catch (e) {
       console.error(e);
@@ -71,17 +71,29 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
   }
 }
 
-export class TestAccountBalanceRepository implements IAccountBalanceRepository {
-  private dbClient: IDatabaseClient<AccountBalance> | undefined;
+
+export class MockAccountBalanceRepository implements IAccountBalanceRepository {
+  private dbClient: IDatabaseClient<AccountBalance>;
 
   constructor(dbClient: IDatabaseClient<AccountBalance>) {
-    this.dbClient = dbClient
-      ? new MongoDBClient<AccountBalance>(AccountBalanceModel)
-      : dbClient;
+    this.dbClient = dbClient;
   }
-  
+
   async getAccountBalanceById(id: string): Promise<AccountBalanceEntity> {
-    throw new Error("Method not implemented.");
+    try {
+      const current = await this.dbClient.getById(id);
+      if (!current) {
+        throw new Error(`No record exists with ${id}`);
+      }
+      return {
+        id: id,
+        balance: current.balance,
+        date: "mock-date"
+      };
+    } catch (e) {
+      console.error(e);
+      throw new Error(`Error updating account balance, ${e}`);
+    }
   }
 
   async getAllAccountBalances(): Promise<AccountBalanceEntity[]> {
@@ -93,7 +105,7 @@ export class TestAccountBalanceRepository implements IAccountBalanceRepository {
         return {
           id: data.id,
           balance: data.balance,
-          date: data.date, // return as ms, not sur eif a I should formt when returning form repo
+          date: data.date
         };
       });
       return data;
@@ -103,7 +115,26 @@ export class TestAccountBalanceRepository implements IAccountBalanceRepository {
     }
   }
 
-  async updateAccountBalanceById(): Promise<AccountBalanceEntity> {
-    throw new Error("to be implemented");
+  async updateAccountBalanceById(
+    id: string,
+    amount: number
+  ): Promise<AccountBalanceEntity> {
+    try {
+      const current = await this.dbClient.getById(id);
+      if (!current) {
+        throw new Error(`No record exists with ${id}`);
+      }
+      await this.dbClient.update(id, {
+        balance: amount,
+      });
+      return {
+        id: id,
+        balance: amount,
+        date: "mock-date",
+      };
+    } catch (e) {
+      console.error(e);
+      throw new Error(`Error updating account balance, ${e}`);
+    }
   }
 }
