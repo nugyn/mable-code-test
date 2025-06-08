@@ -11,6 +11,8 @@ export class MongoDBClient<T> implements IDatabaseClient<T> {
   }
   async getAll(): Promise<T[]> {
     try {
+      console.log("Mongoose connection state:", this.model.db.readyState);
+
       const result = await this.model.find();
       console.log(result);
       return result;
@@ -21,6 +23,8 @@ export class MongoDBClient<T> implements IDatabaseClient<T> {
   }
   async getById(id: string): Promise<T | null> {
     try {
+      console.log("Mongoose connection state:", this.model.db.readyState);
+
       const result = await this.model.findOne({
         id: id,
       });
@@ -33,6 +37,8 @@ export class MongoDBClient<T> implements IDatabaseClient<T> {
   }
   async update(id: string, update: Partial<T>): Promise<void> {
     try {
+      console.log("Mongoose connection state:", this.model.db.readyState);
+
       const result = await this.model.updateOne(
         {
           id: id,

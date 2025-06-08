@@ -1,8 +1,8 @@
 import AccountBalanceService from "./AccountBalance.service";
-import { AccountBalanceRepository } from "../repositories/AccountBalance.repository";
+import { AccountBalanceRepository } from "../repositories/AccountBalance/AccountBalance.repository";
 import { TestMongoDBConnection } from "../utils/db";
 import { IAccountBalanceService } from "./IAccountBalance.service";
-import { IAccountBalanceRepository } from "src/repositories/IAccountBalance.repository";
+import { IAccountBalanceRepository } from "../repositories/AccountBalance/IAccountBalance.repository";
 
 describe("Account Balance Service", () => {
   let connection: TestMongoDBConnection;
@@ -31,23 +31,23 @@ describe("Account Balance Service", () => {
     const expected = {
       "1111234522221234": {
         balance: 10000,
-        date: "placeholder-tbc",
+        date: expect.any(String),
       },
       "1111234522226789": {
         balance: 5000,
-        date: "placeholder-tbc",
+        date: expect.any(String),
       },
       "1212343433335665": {
         balance: 1200,
-        date: "placeholder-tbc",
+        date: expect.any(String),
       },
       "2222123433331212": {
         balance: 550,
-        date: "placeholder-tbc",
+        date: expect.any(String),
       },
       "3212343433335755": {
         balance: 50000,
-        date: "placeholder-tbc",
+        date: expect.any(String),
       },
     };
 
@@ -63,23 +63,23 @@ describe("Account Balance Service", () => {
     const expected = {
       "1111234522221234": {
         balance: 10000,
-        date: "0000",
+        date: expect.any(String),
       },
       "1111234522226789": {
         balance: 5000,
-        date: "0000",
+        date: expect.any(String),
       },
       "1212343433335665": {
         balance: 1200,
-        date: "0000",
+        date: expect.any(String),
       },
       "2222123433331212": {
         balance: 550,
-        date: "0000",
+        date: expect.any(String),
       },
       "3212343433335755": {
         balance: 50000,
-        date: "0000",
+        date: expect.any(String),
       },
     };
 

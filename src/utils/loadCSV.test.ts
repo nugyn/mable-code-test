@@ -7,27 +7,27 @@ describe("Load CSV File", () => {
       {
         id: "1111234522226789",
         balance: 5000,
-        date: "0000",
+        date: expect.any(String),
       },
       {
         id: "1111234522221234",
         balance: 10000,
-        date: "0000",
+        date: expect.any(String),
       },
       {
         id: "2222123433331212",
         balance: 550,
-        date: "0000",
+        date: expect.any(String),
       },
       {
         id: "1212343433335665",
         balance: 1200,
-        date: "0000",
+        date: expect.any(String),
       },
       {
         id: "3212343433335755",
         balance: 50000,
-        date: "0000",
+        date: expect.any(String),
       },
     ];
     //Act

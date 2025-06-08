@@ -1,6 +1,6 @@
 import { BalanceSheets } from "../types/accountBalance.dto";
 import { IAccountBalanceService } from "./IAccountBalance.service";
-import { IAccountBalanceRepository } from "../repositories/IAccountBalance.repository";
+import { IAccountBalanceRepository } from "../repositories/AccountBalance/IAccountBalance.repository";
 import { DataType, loadCSV } from "../utils/loadCSV";
 import { Transaction } from "../types/accountBalance.model";
 
@@ -21,7 +21,7 @@ class AccountBalanceService implements IAccountBalanceService {
             date: curr.date,
           },
         };
-      }, {});
+      }, {} as BalanceSheets);
     } catch (e) {
       throw new Error("Issue retrieve all accounts balance");
     }
@@ -35,8 +35,8 @@ class AccountBalanceService implements IAccountBalanceService {
         DataType.Transaction
       )) as Transaction[];
 
-      transactions.forEach(async (t) => {
-        const { recipientId, senderId, amount } = t;
+      for (const transaction of transactions) {
+        const { recipientId, senderId, amount } = transaction;
 
         // retrieve account balance of recipieint and sender id
         const recipient = await this.repository.getAccountBalanceById(
@@ -61,7 +61,7 @@ class AccountBalanceService implements IAccountBalanceService {
             recipient.balance
           ),
           await this.repository.updateAccountBalanceById(
-            recipientId,
+            senderId,
             sender.balance
           ),
         ]);
@@ -79,7 +79,7 @@ class AccountBalanceService implements IAccountBalanceService {
             date: results[0].date,
           },
         };
-      });
+      }
 
       return result;
     } catch (e) {

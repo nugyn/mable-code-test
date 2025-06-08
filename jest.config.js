@@ -14,5 +14,6 @@ export default {
   transform: {
     "^.+\\.ts$": ["ts-jest", { useESM: true }],
   },
-  setupFiles: ["<rootDir>/jest.setup.ts"]
+  setupFiles: ["<rootDir>/jest.setup.ts"],
+  maxWorkers: 1
 };

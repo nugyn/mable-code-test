@@ -50,8 +50,13 @@ export class TestMongoDBConnection implements IDatabaseConnection {
   ) {}
   async connect(): Promise<void> {
     try {
-      await mongoose.connect(this.config.uri);
-      console.log("MongoDB connected.");
+      if(mongoose.connection.readyState !== 1) {
+        await mongoose.connect(this.config.uri);
+        console.log("MongoDB connected.");
+        return;
+      }
+      console.log("MongoDB already connected.");
+      return;
     } catch (e) {
       console.error("Connection error", e);
       process.exit(1);
@@ -76,6 +81,7 @@ export class TestMongoDBConnection implements IDatabaseConnection {
     for(const key in collections) {
       await collections[key].deleteMany({});
     }
+    console.debug('resetting db');
   }
 
   async initialiseData(): Promise<void> {
@@ -90,14 +96,14 @@ export class TestMongoDBConnection implements IDatabaseConnection {
     const documents: AccountBalance[] = loadData.map((data) => ({
       id: data.id,
       balance: data.balance,
-      date: "0000",
+      date: expect.any(String),
     }));
 
     const response = await AccountBalanceModel.insertMany(documents, {
       throwOnValidationError: true,
     });
 
-    console.log("Inserted documents: ", response);
+    console.log("Init data ", response);
   }
 }
 

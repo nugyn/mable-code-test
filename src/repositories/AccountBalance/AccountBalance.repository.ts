@@ -1,17 +1,14 @@
 import {
   AccountBalance,
   AccountBalanceModel,
-} from "../types/accountBalance.model";
+} from "../../types/accountBalance.model";
 import { IAccountBalanceRepository } from "./IAccountBalance.repository";
-import { IDatabaseClient } from "../clients/clients.interface";
+import { IDatabaseClient } from "../../clients/clients.interface";
 import { AccountBalanceEntity } from "src/types/accountBalance.domain";
-import { MongoDBClient } from "../clients/clients";
+import { MongoDBClient } from "../../clients/clients";
 
 export class AccountBalanceRepository implements IAccountBalanceRepository {
-  private dbClient: IDatabaseClient<AccountBalance>
-  constructor(dbClient: IDatabaseClient<AccountBalance>) {
-    this.dbClient = dbClient ?? new MongoDBClient<AccountBalance>(AccountBalanceModel);
-  }
+  constructor(private dbClient: IDatabaseClient<AccountBalance> = new MongoDBClient<AccountBalance>(AccountBalanceModel)) {}
 
   async getAllAccountBalances(): Promise<AccountBalanceEntity[]> {
     try {

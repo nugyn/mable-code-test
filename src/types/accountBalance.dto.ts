@@ -1,5 +1,5 @@
 // service returns to controller
-type AccountBalanceDTO = {
+export type AccountBalanceDTO = {
   balance: number;
   date: string;
 };
