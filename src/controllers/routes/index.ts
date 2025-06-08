@@ -1,10 +1,10 @@
 import express from "express";
 import { healthCheck } from "../handlers/healthcheck";
 import AccountBalanceController from "../AccountBalance.controller";
-import AccountBalanceService from "src/services/AccountBalance.service";
-import { AccountBalanceRepository } from "src/repositories/AccountBalance.repository";
-import { MongoDBClient } from "src/clients/clients";
-import { AccountBalanceModel } from "src/types/accountBalance.model";
+import AccountBalanceService from "../../services/AccountBalance.service";
+import { AccountBalanceRepository } from "../../repositories/AccountBalance/AccountBalance.repository";
+import { MongoDBClient } from "../../clients/clients";
+import { AccountBalanceModel } from "../../types/accountBalance.model";
 const router = express.Router();
 
 /* GET home page. */

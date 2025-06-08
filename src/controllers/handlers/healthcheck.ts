@@ -1,4 +1,4 @@
-import logger from "../utils/logger";
+import logger from "../../utils/logger";
 import { Response, Request } from "express";
 
 export const healthCheck = async (_req: Request, res: Response) => {
