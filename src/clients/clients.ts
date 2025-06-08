@@ -11,10 +11,7 @@ export class MongoDBClient<T> implements IDatabaseClient<T> {
   }
   async getAll(): Promise<T[]> {
     try {
-      console.log("Mongoose connection state:", this.model.db.readyState);
-
       const result = await this.model.find();
-      console.log(result);
       return result;
     } catch {
       console.error("Issue fetching data");
@@ -23,12 +20,9 @@ export class MongoDBClient<T> implements IDatabaseClient<T> {
   }
   async getById(id: string): Promise<T | null> {
     try {
-      console.log("Mongoose connection state:", this.model.db.readyState);
-
       const result = await this.model.findOne({
         id: id,
       });
-      console.log("found result", result);
       return result;
     } catch (e) {
       console.error(`Issue fetching data`, e);
@@ -37,15 +31,12 @@ export class MongoDBClient<T> implements IDatabaseClient<T> {
   }
   async update(id: string, update: Partial<T>): Promise<void> {
     try {
-      console.log("Mongoose connection state:", this.model.db.readyState);
-
       const result = await this.model.updateOne(
         {
           id: id,
         },
         { $set: update }
       );
-      console.log(result);
     } catch (e) {
       console.error("Issue fetching data");
       throw new Error(`Could not update record for reasons: ${e}`);

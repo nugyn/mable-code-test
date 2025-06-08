@@ -20,7 +20,6 @@ export class MongoDBConnection implements IDatabaseConnection {
   async connect(): Promise<void> {
     try {
       await mongoose.connect(this.config.uri);
-      initialise();
       console.log("MongoDB connected.");
     } catch (e) {
       console.error("Connection error", e);
@@ -105,19 +104,3 @@ export class TestMongoDBConnection implements IDatabaseConnection {
     console.log("Init data ", response);
   }
 }
-
-const initialise = () => {
-  mongoose.connection.on("connected", () => {
-    console.log("connected");
-  });
-  mongoose.connection.on("disconnected", () => {
-    console.log("disconnected");
-  });
-  mongoose.connection.on("error", () => {
-    console.log("error");
-  });
-  mongoose.connection.on("SIGINT", async () => {
-    await mongoose.disconnect();
-    process.exit(0);
-  });
-};
