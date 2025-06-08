@@ -45,7 +45,7 @@ export class MongoDBConnection implements IDatabaseConnection {
 export class TestMongoDBConnection implements IDatabaseConnection {
   constructor(
     private config: DBConfig = {
-      uri: "mongodb://localhost:27017/mongo-local",
+      uri: "mongodb://localhost:27018/mongo-test",
     }
   ) {}
   async connect(): Promise<void> {

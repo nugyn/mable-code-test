@@ -11,9 +11,11 @@
     "prettier": "prettier --write src/**/*.ts",
     "lint": "npm run prettier && eslint src/**/*.ts",
     "test": "npx jest",
-    "docker:setup": "docker pull mongo && docker run --name mongo-local -d -p 27017:27017 mongo:7",
-    "docker:stop": " docker rm -f mongo-local",
-    "docker:start": "docker start mongo-local"
+    "docker:prod:setup": "docker compose up",
+    "docker:setup": "docker pull mongo && docker run --name mongo-test -d -p 27018:27017 mongo:7",
+    "docker:delete": " docker rm -f mongo-test",
+    "docker:stop": "docker stop mongo-test",
+    "docker:start": "docker start mongo-test"
   },
   "author": "",
   "license": "ISC",
