@@ -81,7 +81,6 @@ export class TestMongoDBConnection implements IDatabaseConnection {
     for(const key in collections) {
       await collections[key].deleteMany({});
     }
-    console.debug('resetting db');
   }
 
   async initialiseData(): Promise<void> {

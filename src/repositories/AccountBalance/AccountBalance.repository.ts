@@ -49,16 +49,20 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
   ): Promise<AccountBalanceEntity> {
     try {
       const current = await this.dbClient.getById(id);
-      console.log("31231231231312", current);
       if (!current) {
         throw new Error(`No record exists with ${id}`);
       }
       await this.dbClient.update(id, {
         balance: Number(amount.toFixed(2)),
       });
+
+      const response = await this.dbClient.getById(id);
+      if(!response) {
+        throw new Error(`No record exists with ${id}`);
+      }
       return {
-        id: id,
-        balance: amount,
+        id: response?.id,
+        balance: response?.balance,
         date: Date.now().toString(),
       };
     } catch (e) {

@@ -66,8 +66,6 @@ class AccountBalanceService implements IAccountBalanceService {
           ),
         ]);
 
-        console.debug("DEBUG", results);
-
         result = {
           ...result,
           [results[0].id]: {
@@ -75,8 +73,8 @@ class AccountBalanceService implements IAccountBalanceService {
             date: results[0].date,
           },
           [results[1].id]: {
-            balance: results[0].balance,
-            date: results[0].date,
+            balance: results[1].balance,
+            date: results[1].date,
           },
         };
       }
