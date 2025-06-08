@@ -7,22 +7,19 @@ import { IDatabaseClient } from "../clients/clients.interface";
 import { AccountBalanceEntity } from "src/types/accountBalance.domain";
 import { MongoDBClient } from "../clients/clients";
 
-export class MockAccountBalanceRepository implements IAccountBalanceRepository {
-  private dbClient: IDatabaseClient<AccountBalance> | undefined;
-  constructor() {
-    this.dbClient = new MongoDBClient<AccountBalance>(AccountBalanceModel);
+export class AccountBalanceRepository implements IAccountBalanceRepository {
+  private dbClient: IDatabaseClient<AccountBalance>
+  constructor(dbClient: IDatabaseClient<AccountBalance>) {
+    this.dbClient = dbClient ?? new MongoDBClient<AccountBalance>(AccountBalanceModel);
   }
 
   async getAllAccountBalances(): Promise<AccountBalanceEntity[]> {
     try {
-      if (!this.dbClient) {
-        throw new Error("no db client");
-      }
       const data = (await this.dbClient.getAll()).map((data) => {
         return {
           id: data.id,
           balance: data.balance,
-          date: data.date, // format here?
+          date: data.date,
         };
       });
       return data;
@@ -41,7 +38,7 @@ export class MockAccountBalanceRepository implements IAccountBalanceRepository {
       return {
         id: id,
         balance: current.balance,
-        date: "0000",
+        date: Date.now().toString()
       };
     } catch (e) {
       console.error(e);
@@ -74,7 +71,7 @@ export class MockAccountBalanceRepository implements IAccountBalanceRepository {
   }
 }
 
-export class AccountBalanceRepository implements IAccountBalanceRepository {
+export class TestAccountBalanceRepository implements IAccountBalanceRepository {
   private dbClient: IDatabaseClient<AccountBalance> | undefined;
 
   constructor(dbClient: IDatabaseClient<AccountBalance>) {
@@ -82,6 +79,7 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
       ? new MongoDBClient<AccountBalance>(AccountBalanceModel)
       : dbClient;
   }
+  
   async getAccountBalanceById(id: string): Promise<AccountBalanceEntity> {
     throw new Error("Method not implemented.");
   }
@@ -95,7 +93,7 @@ export class AccountBalanceRepository implements IAccountBalanceRepository {
         return {
           id: data.id,
           balance: data.balance,
-          date: data.date, // format here?
+          date: data.date, // return as ms, not sur eif a I should formt when returning form repo
         };
       });
       return data;

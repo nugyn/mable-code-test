@@ -3,28 +3,27 @@ import path from 'path';
 import dotenv from 'dotenv';
 import http from 'http';
 import router from "./controllers/routes/index";
-import { connectDB, disconnectDB } from './utils/db';
+import { MongoDBConnection } from './utils/db';
 
 dotenv.config({ path: path.join(__dirname, '../.env') });
 
+// init server
 const app: express.Application = express();
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 // setup data base connection
-connectDB(process.env.MONGO_URI!)
-
+const connection = new MongoDBConnection({uri: process.env.MONGO_URI ?? ""});
 // shutdown
 process.on('SIGINT', async () => {
-  await disconnectDB();
+  await connection.disconnect();
   process.exit(0)
 })
 
 // setup routes
 app.use('/', router);
 
-// assign
+// assign port
 const port = process.env.PORT || '8000';
 app.set('port', port);
 

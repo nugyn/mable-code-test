@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { MockAccountBalanceRepository } from "./AccountBalance.repository";
+import { AccountBalanceRepository } from "./AccountBalance.repository";
 import { AccountBalanceEntity } from "../types/accountBalance.domain";
 import { DataType, loadCSV } from "../utils/loadCSV";
 import {
@@ -44,7 +44,7 @@ describe("Account Balance Repository", () => {
 
   it("will get all account balances", async () => {
     //Arrange
-    const mockRepo = new MockAccountBalanceRepository();
+    const mockRepo = new AccountBalanceRepository();
 
     const expected: AccountBalanceEntity[] = [
       {
@@ -83,7 +83,7 @@ describe("Account Balance Repository", () => {
 
   it("will update account balance by id", async () => {
     //Arrange
-    const mockRepo = new MockAccountBalanceRepository();
+    const mockRepo = new AccountBalanceRepository();
 
     const expected: AccountBalanceEntity = {
       id: "1111234522226789",

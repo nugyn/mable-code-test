@@ -1,71 +1,53 @@
 import AccountBalanceService from "./AccountBalance.service";
-import { MockAccountBalanceRepository } from "../repositories/AccountBalance.repository";
-import mongoose from "mongoose";
-import {
-  AccountBalance,
-  AccountBalanceModel,
-} from "../types/accountBalance.model";
-import { DataType, loadCSV } from "../utils/loadCSV";
+import { AccountBalanceRepository } from "../repositories/AccountBalance.repository";
+import { TestMongoDBConnection } from "../utils/db";
+import { IAccountBalanceService } from "./IAccountBalance.service";
+import { IAccountBalanceRepository } from "src/repositories/IAccountBalance.repository";
 
 describe("Account Balance Service", () => {
+  let connection: TestMongoDBConnection;
+  let repo: IAccountBalanceRepository;
+  let service: IAccountBalanceService;
+
   beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost:27017/mongo-local");
+    connection = new TestMongoDBConnection();
+    await connection.connect();
+
+    repo = new AccountBalanceRepository();
+    service = new AccountBalanceService(repo);
   });
 
   beforeEach(async () => {
-    await AccountBalanceModel.deleteMany({});
-
-    const filePath = process.env.ACCOUNT_BALANCE_FILE_PATH;
-    if (!filePath) {
-      throw new Error("ACCOUNT_BALANCE_FILE_PATH is not defined");
-    }
-    const loadData = (await loadCSV(
-      DataType.AccountBalance
-    )) as AccountBalance[];
-
-    const documents: AccountBalance[] = loadData.map((data) => ({
-      id: data.id,
-      balance: data.balance,
-      date: "0000",
-    }));
-
-    await AccountBalanceModel.insertMany(documents, {
-      throwOnValidationError: true,
-    });
-  });
-
-  afterEach(async () => {
-    await AccountBalanceModel.deleteMany({});
+    await connection.reset();
+    await connection.initialiseData();
   });
 
   afterAll(async () => {
-    await mongoose.connection.close();
+    await connection.disconnect();
   });
 
   it("getAllAccountBalances", async () => {
     //Arrange
-    const repo = new MockAccountBalanceRepository();
-    const service = new AccountBalanceService(repo);
     const expected = {
       "1111234522221234": {
         balance: 10000,
-        date: "0000",
+        date: "placeholder-tbc",
       },
       "1111234522226789": {
         balance: 5000,
-        date: "0000",
+        date: "placeholder-tbc",
       },
       "1212343433335665": {
         balance: 1200,
-        date: "0000",
+        date: "placeholder-tbc",
       },
       "2222123433331212": {
         balance: 550,
-        date: "0000",
+        date: "placeholder-tbc",
       },
       "3212343433335755": {
         balance: 50000,
-        date: "0000",
+        date: "placeholder-tbc",
       },
     };
 
@@ -78,8 +60,6 @@ describe("Account Balance Service", () => {
 
   it("processTransactions", async () => {
     //Arrange
-    const repo = new MockAccountBalanceRepository();
-    const service = new AccountBalanceService(repo);
     const expected = {
       "1111234522221234": {
         balance: 10000,
